@@ -10,10 +10,16 @@ PADDLE_WIDTH = 10
 PADDLE_HEIGHT = 100
 BALL_SPEED = 10
 BALL_WIDTH_HEIGHT = 16
+SOUND_FILE = "button-6.wav"
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Pong")
+
+try:
+	sound = pygame.mixer.Sound(SOUND_FILE)
+except pygame.error, message:
+	print "Cannot load sound: " + SOUND_FILE
 
 # This is the rect that goes downt the middle of the screen, splitting the screen in half.
 line_rect = pygame.Rect((SCREEN_WIDTH / 2, 0), (10, SCREEN_HEIGHT))
@@ -83,8 +89,10 @@ while True:
 	# Test if the ball is hit by the paddle; if yes reverse speed and add a point
 	if paddle_rect.colliderect(ball_rect):
 		ball_speed[0] = -ball_speed[0]
+		sound.play()
 		#score += 1
 	if paddleR_rect.colliderect(ball_rect):
+		sound.play()
 		ball_speed[0] = -ball_speed[0]
 	
 	# Clear screen
