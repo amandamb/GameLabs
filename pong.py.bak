@@ -73,7 +73,7 @@ while True:
 	# Test if the ball is hit by the paddle; if yes reverse speed and add a point
 	if paddle_rect.colliderect(ball_rect):
 		ball_speed[0] = -ball_speed[0]
-		#score += 1
+		score += 1
 	
 	# Clear screen
 	screen.fill((255, 255, 255))
