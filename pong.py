@@ -3,13 +3,14 @@ import pygame, sys
 # Constants
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-PADDLE_START_X = 10
-PADDLER_START_X = SCREEN_WIDTH - PADDLE_START_X
-PADDLE_START_Y = 20
 PADDLE_WIDTH = 10
 PADDLE_HEIGHT = 100
+PADDLE_START_X = 10
+PADDLER_START_X = SCREEN_WIDTH - (2 * PADDLE_WIDTH)
+PADDLE_START_Y = 20
 BALL_SPEED = 10
 BALL_WIDTH_HEIGHT = 16
+PADDLE_SPEED = 20
 SOUND_FILE = "button-6.wav"
 
 pygame.init()
@@ -38,6 +39,8 @@ paddleR_rect = pygame.Rect((PADDLER_START_X, PADDLE_START_Y), (PADDLE_WIDTH, PAD
 score = 0
 
 opponentScore = 0
+
+paddle_speed = PADDLE_SPEED
 
 # Load the font for displaying the score
 font = pygame.font.Font(None, 30)
@@ -80,12 +83,23 @@ while True:
 	elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
 		sys.exit(0)
 		pygame.quit()
+	if pygame.key.get_pressed()[pygame.K_w] and paddleR_rect.top > 0:
+		paddleR_rect.top -= BALL_SPEED
+	if pygame.key.get_pressed()[pygame.K_s] and paddleR_rect.bottom < SCREEN_HEIGHT:
+		paddleR_rect.top += BALL_SPEED
 	
 	if (score < 11) and (opponentScore < 11):
+		# if no one has won the game yet, keep playing
 		
 		# Update ball position
 		ball_rect.left += ball_speed[0]
 		ball_rect.top += ball_speed[1]
+		
+		#paddleR_rect.top += paddle_speed
+		#if paddleR_rect.top <= 0:
+		#	paddle_speed *= -1
+		#if paddleR_rect.bottom >= SCREEN_HEIGHT:
+		#	paddle_speed *= -1
 
 		# Ball collision with rails
 		if ball_rect.top <= 0 or ball_rect.bottom >= SCREEN_HEIGHT:
@@ -126,9 +140,9 @@ while True:
 		restart = "Press R to Restart."
 		winner = ""
 		if score >= 11:
-			winner = "You Win!"
+			winner = "Left Side Player Wins!"
 		else:
-			winner = "Sorry, you lose."
+			winner = "Right Side Player Wins!"
 		
 		screen.fill((255, 255, 255)) # clear screen
 		winner_text = font.render(winner, True, (255, 0, 50))
