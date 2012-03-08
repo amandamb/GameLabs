@@ -140,9 +140,9 @@ while True:
 		restart = "Press R to Restart."
 		winner = ""
 		if score >= 11:
-			winner = "Player 1 (Left Side) Wins!"
+			winner = "Left Side Player Wins!"
 		else:
-			winner = "Player 2 (Right Side) Wins!"
+			winner = "Right Side Player Wins!"
 		
 		screen.fill((255, 255, 255)) # clear screen
 		winner_text = font.render(winner, True, (255, 0, 50))

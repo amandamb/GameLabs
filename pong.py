@@ -137,7 +137,7 @@ while True:
 		screen.blit(opponentScore_text, (SCREEN_WIDTH - (SCREEN_WIDTH / 4) - font.size(str(score))[0] / 2, 5))
 	
 	else:
-		restart = "Press R to Restart."
+		restart = "Press R to start a Rematch."
 		winner = ""
 		if score >= 11:
 			winner = "Left Side Player Wins!"
