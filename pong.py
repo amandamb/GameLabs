@@ -62,6 +62,15 @@ while True:
 				paddleR_rect.top = 0
 			elif paddleR_rect.bottom >= SCREEN_HEIGHT:
 				paddleR_rect.bottom = SCREEN_HEIGHT
+		elif event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_r:
+				# Reset game
+				score = 0
+				opponentScore = 0
+				ball_rect = pygame.Rect((SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), (BALL_WIDTH_HEIGHT, BALL_WIDTH_HEIGHT))
+				paddle_rect = pygame.Rect((PADDLE_START_X, PADDLE_START_Y), (PADDLE_WIDTH, PADDLE_HEIGHT))
+				paddleR_rect = pygame.Rect((PADDLER_START_X, PADDLE_START_Y), (PADDLE_WIDTH, PADDLE_HEIGHT))
+				
 
 	# This test if up or down keys are pressed; if yes, move the paddle
 	if pygame.key.get_pressed()[pygame.K_UP] and paddle_rect.top > 0:
@@ -71,43 +80,63 @@ while True:
 	elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
 		sys.exit(0)
 		pygame.quit()
+	
+	if (score < 11) and (opponentScore < 11):
 		
-	# Update ball position
-	ball_rect.left += ball_speed[0]
-	ball_rect.top += ball_speed[1]
+		# Update ball position
+		ball_rect.left += ball_speed[0]
+		ball_rect.top += ball_speed[1]
 
-	# Ball collision with rails
-	if ball_rect.top <= 0 or ball_rect.bottom >= SCREEN_HEIGHT:
-		ball_speed[1] = -ball_speed[1]
-	if  ball_rect.left <= 0:
-		ball_speed[0] = -ball_speed[0]
-		opponentScore += 1
-	if ball_rect.right >= SCREEN_WIDTH:
-		ball_speed[0] = -ball_speed[0]
-		score += 1
+		# Ball collision with rails
+		if ball_rect.top <= 0 or ball_rect.bottom >= SCREEN_HEIGHT:
+			ball_speed[1] = -ball_speed[1]
+			#ball_rect = pygame.Rect((SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), (BALL_WIDTH_HEIGHT, BALL_WIDTH_HEIGHT))
+		if  ball_rect.left <= 0:
+			ball_speed[0] = ball_speed[0]
+			ball_rect = pygame.Rect((SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), (BALL_WIDTH_HEIGHT, BALL_WIDTH_HEIGHT))
+			opponentScore += 1
+		if ball_rect.right >= SCREEN_WIDTH:
+			ball_speed[0] = ball_speed[0]
+			ball_rect = pygame.Rect((SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), (BALL_WIDTH_HEIGHT, BALL_WIDTH_HEIGHT))
+			score += 1
 
-	# Test if the ball is hit by the paddle; if yes reverse speed and add a point
-	if paddle_rect.colliderect(ball_rect):
-		ball_speed[0] = -ball_speed[0]
-		sound.play()
-		#score += 1
-	if paddleR_rect.colliderect(ball_rect):
-		sound.play()
-		ball_speed[0] = -ball_speed[0]
+		# Test if the ball is hit by the paddle; if yes reverse speed and add a point
+		if paddle_rect.colliderect(ball_rect):
+			ball_speed[0] = -ball_speed[0]
+			sound.play()
+			#score += 1
+		if paddleR_rect.colliderect(ball_rect):
+			sound.play()
+			ball_speed[0] = -ball_speed[0]
 	
-	# Clear screen
-	screen.fill((255, 255, 255))
-
-	# Render the ball, the paddle, and the score
-	pygame.draw.rect(screen, (0, 0, 0), paddle_rect) # Your paddle
-	pygame.draw.rect(screen, (0, 0, 0), paddleR_rect) # opponent paddle
-	pygame.draw.rect(screen, (100, 0, 100), line_rect) # line down the middle 
-	pygame.draw.circle(screen, (0, 0, 0), ball_rect.center, ball_rect.width / 2) # The ball
-	score_text = font.render(str(score), True, (0, 0, 0))
-	opponentScore_text = font.render(str(opponentScore), True, (0, 0, 0))
-	screen.blit(score_text, ((SCREEN_WIDTH / 4) - font.size(str(score))[0] / 2, 5)) # The score
-	screen.blit(opponentScore_text, (SCREEN_WIDTH - (SCREEN_WIDTH / 4) - font.size(str(score))[0] / 2, 5))
+		# Clear screen
+		screen.fill((255, 255, 255))
 	
+		# Render the ball, the paddle, and the score
+		pygame.draw.rect(screen, (0, 0, 0), paddle_rect) # Your paddle
+		pygame.draw.rect(screen, (0, 0, 0), paddleR_rect) # opponent paddle
+		pygame.draw.rect(screen, (100, 0, 100), line_rect) # line down the middle 
+		pygame.draw.circle(screen, (0, 0, 0), ball_rect.center, ball_rect.width / 2) # The ball
+		score_text = font.render(str(score), True, (0, 0, 0))
+		opponentScore_text = font.render(str(opponentScore), True, (0, 0, 0))
+		screen.blit(score_text, ((SCREEN_WIDTH / 4) - font.size(str(score))[0] / 2, 5)) # The score
+		screen.blit(opponentScore_text, (SCREEN_WIDTH - (SCREEN_WIDTH / 4) - font.size(str(score))[0] / 2, 5))
+	
+	else:
+		restart = "Press R to Restart."
+		winner = ""
+		if score >= 11:
+			winner = "You Win!"
+		else:
+			winner = "Sorry, you lose."
+		
+		screen.fill((255, 255, 255)) # clear screen
+		winner_text = font.render(winner, True, (255, 0, 50))
+		restart_text = font.render(restart, 1, (0, 0, 0))
+		screen.blit(winner_text, ((SCREEN_WIDTH / 2) - font.size(winner)[0] / 2, SCREEN_HEIGHT / 2))
+		screen.blit(restart_text, ((SCREEN_WIDTH / 2) - font.size(restart)[0] / 2, (SCREEN_HEIGHT / 2) + font.size(restart)[1] * 2))
+		
+		
 	# Update screen and wait 20 milliseconds
 	pygame.display.flip()
 	pygame.time.delay(20)
