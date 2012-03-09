@@ -76,17 +76,17 @@ while True:
 				
 
 	# This test if up or down keys are pressed; if yes, move the paddle
-	if pygame.key.get_pressed()[pygame.K_UP] and paddle_rect.top > 0:
-		paddle_rect.top -= BALL_SPEED
-	elif pygame.key.get_pressed()[pygame.K_DOWN] and paddle_rect.bottom < SCREEN_HEIGHT:
-		paddle_rect.top += BALL_SPEED
+	if pygame.key.get_pressed()[pygame.K_UP] and paddleR_rect.top > 0:
+		paddleR_rect.top -= BALL_SPEED
+	elif pygame.key.get_pressed()[pygame.K_DOWN] and paddleR_rect.bottom < SCREEN_HEIGHT:
+		paddleR_rect.top += BALL_SPEED
 	elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
 		sys.exit(0)
 		pygame.quit()
-	if pygame.key.get_pressed()[pygame.K_w] and paddleR_rect.top > 0:
-		paddleR_rect.top -= BALL_SPEED
-	if pygame.key.get_pressed()[pygame.K_s] and paddleR_rect.bottom < SCREEN_HEIGHT:
-		paddleR_rect.top += BALL_SPEED
+	if pygame.key.get_pressed()[pygame.K_w] and paddle_rect.top > 0:
+		paddle_rect.top -= BALL_SPEED
+	if pygame.key.get_pressed()[pygame.K_s] and paddle_rect.bottom < SCREEN_HEIGHT:
+		paddle_rect.top += BALL_SPEED
 	
 	if (score < 11) and (opponentScore < 11):
 		# if no one has won the game yet, keep playing
